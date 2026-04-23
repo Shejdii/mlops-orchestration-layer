@@ -1,0 +1,3 @@
+secondary_metrics:
+  max_regression:
+    rmse: 0.02

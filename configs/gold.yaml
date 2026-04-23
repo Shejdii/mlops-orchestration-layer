@@ -1,0 +1,27 @@
+project_name: gold
+
+project_root: "../Gold-risk-ml-pipeline"
+python_bin: "../Gold-risk-ml-pipeline/.venv/Scripts/python.exe"
+
+commands:
+  train:
+    - "src.data.ingest"
+    - "src.data.preprocess"
+    - "src.features.build_features"
+    - "src.model.train_volatility_regime"
+    - "src.model.train_risk_score"
+    - "scripts.export_metrics"
+
+  smoke_predict: "scripts.smoke_predict"
+
+artifacts:
+  classifier_model: "artifacts/models/regime_classifier.pkl"
+  regressor_model: "artifacts/models/risk_5d_regressor.pkl"
+  smoke_input_csv: "data/features/test.csv"
+  metrics_json: "artifacts/metrics/gold_metrics.json"
+
+task:
+  task_type: "tabular_ml"
+  problem_type: "classification_regression"
+  primary_metric_name: "macro_f1"
+  higher_is_better: true
