@@ -1,0 +1,21 @@
+project_name: f1
+
+project_root: "../F1/F1ml"
+python_bin: "../F1/F1ml/.venv/Scripts/python.exe"
+
+commands:
+  train:
+    - "src.cli all"
+    - "scripts.export_metrics"
+
+  smoke_predict: "scripts.smoke_predict"
+
+artifacts:
+  model: "artifacts/models/ridge.joblib"
+  metrics_json: "artifacts/reports/metrics.json"
+
+task:
+  task_type: "tabular_ml"
+  problem_type: "regression_ranking"
+  primary_metric_name: "rmse"
+  higher_is_better: false

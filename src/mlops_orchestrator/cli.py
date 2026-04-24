@@ -6,6 +6,7 @@ from typing import Any
 import typer
 import yaml
 
+from mlops_orchestrator.adapters.f1_adapter import F1Adapter
 from mlops_orchestrator.adapters.gold_adapter import GoldAdapter
 from mlops_orchestrator.contracts.schemas import BaselineRecord
 from mlops_orchestrator.gates.policy_engine import PolicyEngine
@@ -40,17 +41,18 @@ def run(project: str) -> None:
         typer.echo(f"Unknown project: {project}")
         raise typer.Exit(code=1)
 
-    if project != "gold":
-        typer.echo(f"[stub] Real workflow not implemented yet for project: {project}")
-        raise typer.Exit(code=0)
 
-    typer.echo("\n[RUN] Loading configs")
-    gold_config = load_yaml_config("configs/gold.yaml")
+    project_config = load_yaml_config(f"configs/{project}.yaml")
     policy_config = (
         load_yaml_config("configs/policy.yaml") if Path("configs/policy.yaml").exists() else {}
     )
 
-    adapter = GoldAdapter(gold_config)
+    adapters = {
+        "gold": GoldAdapter,
+        "f1": F1Adapter,
+    }
+
+    adapter = adapters[project](project_config)
     registry = ModelRegistry()
     policy_engine = PolicyEngine(policy_config=policy_config)
 
@@ -58,19 +60,19 @@ def run(project: str) -> None:
     metadata = adapter.metadata()
 
     typer.echo("[STEP] Training candidate model")
-    training_result = adapter.train(gold_config)
+    training_result = adapter.train(project_config)
     typer.echo(f"[RESULT] training_success={training_result.success}")
 
     typer.echo("[STEP] Evaluating candidate model")
-    evaluation_result = adapter.evaluate(gold_config)
+    evaluation_result = adapter.evaluate(project_config)
     typer.echo(f"[RESULT] evaluation_success={evaluation_result.success}")
 
     typer.echo("[STEP] Verifying packaged artifact")
-    packaging_result = adapter.package(gold_config)
+    packaging_result = adapter.package(project_config)
     typer.echo(f"[RESULT] packaging_success={packaging_result.success}")
 
     typer.echo("[STEP] Running smoke prediction")
-    smoke_result = adapter.predict_smoke(gold_config)
+    smoke_result = adapter.predict_smoke(project_config)
     typer.echo(f"[RESULT] smoke_success={smoke_result.success}")
 
     typer.echo("[STEP] Loading baseline from registry")
