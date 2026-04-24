@@ -41,7 +41,6 @@ def run(project: str) -> None:
         typer.echo(f"Unknown project: {project}")
         raise typer.Exit(code=1)
 
-
     project_config = load_yaml_config(f"configs/{project}.yaml")
     policy_config = (
         load_yaml_config("configs/policy.yaml") if Path("configs/policy.yaml").exists() else {}
