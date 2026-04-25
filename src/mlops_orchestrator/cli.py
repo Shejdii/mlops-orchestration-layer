@@ -8,6 +8,7 @@ import yaml
 
 from mlops_orchestrator.adapters.f1_adapter import F1Adapter
 from mlops_orchestrator.adapters.gold_adapter import GoldAdapter
+from mlops_orchestrator.adapters.liar_adapter import LiarAdapter
 from mlops_orchestrator.contracts.schemas import BaselineRecord
 from mlops_orchestrator.gates.policy_engine import PolicyEngine
 from mlops_orchestrator.registry.model_registry import ModelRegistry
@@ -47,8 +48,9 @@ def run(project: str) -> None:
     )
 
     adapters = {
-        "gold": GoldAdapter,
-        "f1": F1Adapter,
+    "gold": GoldAdapter,
+    "f1": F1Adapter,
+    "liar": LiarAdapter,
     }
 
     adapter = adapters[project](project_config)

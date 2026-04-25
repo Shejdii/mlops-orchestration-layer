@@ -1,0 +1,20 @@
+project_name: "liar"
+project_root: "../fake-news-reliability"
+python_bin: "../fake-news-reliability/.venv/Scripts/python.exe"
+
+commands:
+  train:
+    - "src.pipeline.train_distilbert"
+    - "src.scripts.export_metrics"
+
+  smoke_predict: "src.scripts.smoke_predict"
+
+artifacts:
+  model: "artifacts/models/distilbert_model"
+  metrics_json: "artifacts/reports/metrics.json"
+
+task:
+  task_type: "text_ml"
+  problem_type: "classification"
+  primary_metric_name: "macro_f1"
+  higher_is_better: true

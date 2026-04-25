@@ -101,6 +101,7 @@ class GoldAdapter(BaseProjectAdapter):
             model_version=model_version,
             message="\n".join(executed_steps),
         )
+
     def evaluate(self, config: dict[str, Any]) -> EvaluationResult:
         metrics_path = self.metrics_json_path()
         primary_metric_name = config["task"]["primary_metric_name"]
