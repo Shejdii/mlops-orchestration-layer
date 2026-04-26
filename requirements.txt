@@ -1,6 +1,6 @@
 pytest
 pyyaml
-black
-ruff
+black==24.10.0
+ruff==0.15.12
 typer
 rich
