@@ -1,4 +1,4 @@
-# Python
+# Python cache
 __pycache__/
 *.py[cod]
 *.pyo
@@ -9,18 +9,15 @@ __pycache__/
 venv/
 env/
 
-# Packaging
-build/
-dist/
-*.egg-info/
+# Git
+.git
+.gitignore
 
-# Test / coverage
+# CI / tooling
+.github/
 .pytest_cache/
-.coverage
-htmlcov/
-
-# Jupyter
-.ipynb_checkpoints/
+.ruff_cache/
+.mypy_cache/
 
 # IDE / OS
 .vscode/
@@ -28,18 +25,27 @@ htmlcov/
 .DS_Store
 Thumbs.db
 
+# Jupyter
+.ipynb_checkpoints/
+
 # Local env
 .env
 
-# Artifacts / logs
+# Artifacts / ML outputs
 artifacts/
 logs/
 outputs/
-
-# MLflow
 mlruns/
 mlartifacts/
 mlflow.db
+
+# Data (ważne – nie chcemy wrzucać datasetów do obrazu)
+data/
+
+# Build / packaging
+build/
+dist/
+*.egg-info/
 
 # Misc
 *.log
