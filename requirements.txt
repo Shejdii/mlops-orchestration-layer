@@ -1,1 +1,6 @@
--e .[dev]
+pytest
+pyyaml
+black
+ruff
+typer
+rich

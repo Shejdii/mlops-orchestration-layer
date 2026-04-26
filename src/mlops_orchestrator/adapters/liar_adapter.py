@@ -9,7 +9,6 @@ from mlops_orchestrator.contracts.schemas import ProjectMetadata
 from mlops_orchestrator.contracts.schemas import (
     EvaluationResult,
     PackagingResult,
-    ProjectMetadata,
     SmokeTestResult,
     TrainingResult,
 )
@@ -72,7 +71,7 @@ class LiarAdapter(BaseProjectAdapter):
         )
 
         return SmokeTestResult(success=result.returncode == 0)
-    
+
     def metadata(self) -> ProjectMetadata:
         return ProjectMetadata(
             project_name=self.project_name,

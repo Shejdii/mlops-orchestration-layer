@@ -54,6 +54,7 @@ def test_f1_config_contract():
     assert config["task"]["primary_metric_name"] == "rmse"
     assert config["task"]["higher_is_better"] is False
 
+
 def test_liar_config_contract():
     config = load_config("liar")
 
@@ -68,7 +69,6 @@ def test_liar_config_contract():
     assert "metrics_json" in config["artifacts"]
 
 
-
 def test_gold_adapter_imports():
     from mlops_orchestrator.adapters.gold_adapter import GoldAdapter
 
@@ -79,6 +79,7 @@ def test_f1_adapter_imports():
     from mlops_orchestrator.adapters.f1_adapter import F1Adapter
 
     assert F1Adapter.project_name == "f1"
+
 
 def test_liar_adapter_imports():
     from mlops_orchestrator.adapters.liar_adapter import LiarAdapter

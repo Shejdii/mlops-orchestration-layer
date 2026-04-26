@@ -48,9 +48,9 @@ def run(project: str) -> None:
     )
 
     adapters = {
-    "gold": GoldAdapter,
-    "f1": F1Adapter,
-    "liar": LiarAdapter,
+        "gold": GoldAdapter,
+        "f1": F1Adapter,
+        "liar": LiarAdapter,
     }
 
     adapter = adapters[project](project_config)

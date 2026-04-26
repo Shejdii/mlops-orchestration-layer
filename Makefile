@@ -9,10 +9,30 @@ test:
 	python -m pytest -q -s --log-cli-level=INFO
 
 format:
-	$(PYTHON) -m black src tests
+	black .
+
+format-check:
+	black --check .
 
 lint:
-	$(PYTHON) -m compileall src
+	ruff check src tests
+
+lint-fix:
+	ruff check src tests --fix
 
 cli:
 	$(PYTHON) -m mlops_orchestrator.cli list
+
+# --- Docker ---
+
+docker-build:
+	docker build -t magistrala .
+
+docker-run:
+	docker run --rm magistrala
+
+docker-test:
+	docker run --rm magistrala python -m pytest -q
+
+docker-cli:
+	docker run --rm magistrala mlops list

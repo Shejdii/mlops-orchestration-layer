@@ -1,4 +1,4 @@
-import pytest
+import tempfile
 
 from mlops_orchestrator.contracts.schemas import (
     BaselineRecord,
@@ -9,6 +9,7 @@ from mlops_orchestrator.contracts.schemas import (
     TrainingResult,
 )
 from mlops_orchestrator.gates.policy_engine import PolicyEngine
+from mlops_orchestrator.registry.model_registry import ModelRegistry
 
 
 def test_policy_promotes_when_better_than_baseline():
@@ -102,13 +103,6 @@ def test_policy_rejects_when_worse_than_baseline():
     assert decision.reason_code == "PRIMARY_METRIC_REGRESSION"
 
 
-import tempfile
-from pathlib import Path
-
-from mlops_orchestrator.registry.model_registry import ModelRegistry
-from mlops_orchestrator.contracts.schemas import BaselineRecord
-
-
 def test_registry_promote_and_load():
     print("\n[TEST] Registry: promote and load baseline")
 
@@ -130,9 +124,6 @@ def test_registry_promote_and_load():
 
         assert loaded is not None
         assert loaded.model_version == "v1"
-
-
-from mlops_orchestrator.contracts.schemas import TrainingResult
 
 
 def test_training_result_schema():

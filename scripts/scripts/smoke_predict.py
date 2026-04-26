@@ -49,9 +49,9 @@ def main() -> None:
                 "success": True,
                 "message": "Smoke prediction passed.",
                 "rows_used": len(sample),
-                "prediction_preview": prediction.tolist()
-                if hasattr(prediction, "tolist")
-                else str(prediction),
+                "prediction_preview": (
+                    prediction.tolist() if hasattr(prediction, "tolist") else str(prediction)
+                ),
             },
             indent=2,
         )
