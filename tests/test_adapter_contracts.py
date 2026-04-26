@@ -1,9 +1,17 @@
-import pytest
+from pathlib import Path
 
-from tests.test_cli_config import load_config
-from mlops_orchestrator.adapters.gold_adapter import GoldAdapter
+import pytest
+import yaml
+
 from mlops_orchestrator.adapters.f1_adapter import F1Adapter
+from mlops_orchestrator.adapters.gold_adapter import GoldAdapter
 from mlops_orchestrator.adapters.liar_adapter import LiarAdapter
+
+
+def load_config(project: str) -> dict:
+    path = Path(f"configs/{project}.yaml")
+    assert path.exists(), f"Missing config: {path}"
+    return yaml.safe_load(path.read_text(encoding="utf-8"))
 
 
 @pytest.mark.parametrize(
