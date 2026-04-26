@@ -1,7 +1,11 @@
 import json
 from dataclasses import asdict
 from pathlib import Path
+
 from typing import Any
+from rich.console import Console
+from rich.table import Table
+
 
 import typer
 import yaml
@@ -15,9 +19,17 @@ from mlops_orchestrator.registry.model_registry import ModelRegistry
 
 app = typer.Typer(help="Reusable MLOps orchestration layer for multi-project ML systems.")
 
+console = Console()
+
+ADAPTERS = {
+    "gold": GoldAdapter,
+    "f1": F1Adapter,
+    "liar": LiarAdapter,
+}
+
 
 def get_supported_projects() -> list[str]:
-    return ["gold", "f1", "liar"]
+    return list(ADAPTERS.keys())
 
 
 def load_yaml_config(path: str) -> dict[str, Any]:
@@ -37,23 +49,52 @@ def list_projects() -> None:
 
 
 @app.command()
-def run(project: str) -> None:
+def load_project_config(project: str) -> dict[str, Any]:
+    return load_yaml_config(f"configs/{project}.yaml")
+
+
+def validate_project(project: str) -> None:
     if project not in get_supported_projects():
         typer.echo(f"Unknown project: {project}")
         raise typer.Exit(code=1)
 
-    project_config = load_yaml_config(f"configs/{project}.yaml")
+
+def _format_metric(latest_decision: dict[str, Any] | None) -> str:
+    if not latest_decision:
+        return "-"
+
+    metric_name = latest_decision.get("primary_metric_name", "-")
+    metric_value = latest_decision.get("candidate_primary_metric")
+
+    if metric_value is None:
+        return f"{metric_name}=None"
+
+    return f"{metric_name}={metric_value:.4f}"
+
+
+def _format_gates(latest_decision: dict[str, Any] | None) -> str:
+    if not latest_decision:
+        return "-"
+
+    gate_results = latest_decision.get("gate_results", [])
+    if not gate_results:
+        return "-"
+
+    passed = sum(1 for gate in gate_results if gate.get("passed") is True)
+    total = len(gate_results)
+
+    return f"{passed}/{total}"
+
+
+@app.command()
+def run(project: str) -> None:
+    validate_project(project)
+    project_config = load_project_config(project)
     policy_config = (
         load_yaml_config("configs/policy.yaml") if Path("configs/policy.yaml").exists() else {}
     )
 
-    adapters = {
-        "gold": GoldAdapter,
-        "f1": F1Adapter,
-        "liar": LiarAdapter,
-    }
-
-    adapter = adapters[project](project_config)
+    adapter = ADAPTERS[project](project_config)
     registry = ModelRegistry()
     policy_engine = PolicyEngine(policy_config=policy_config)
 
@@ -131,10 +172,42 @@ def run(project: str) -> None:
 
 
 @app.command()
+@app.command("status-all")
+def status_all() -> None:
+    registry = ModelRegistry()
+
+    table = Table(title="Magistrala MLOps Control Plane Status")
+    table.add_column("Project", style="bold")
+    table.add_column("Baseline")
+    table.add_column("Latest Decision")
+    table.add_column("Primary Metric")
+    table.add_column("Gates")
+    table.add_column("Reason")
+
+    for project in get_supported_projects():
+        status_payload = registry.get_status(project)
+
+        baseline = status_payload.get("baseline")
+        latest_decision = status_payload.get("latest_decision")
+
+        baseline_status = "yes" if baseline else "no"
+        decision = latest_decision.get("decision", "-") if latest_decision else "-"
+        reason = latest_decision.get("reason_code", "-") if latest_decision else "-"
+
+        table.add_row(
+            project,
+            baseline_status,
+            decision,
+            _format_metric(latest_decision),
+            _format_gates(latest_decision),
+            reason,
+        )
+
+    console.print(table)
+
+
 def status(project: str) -> None:
-    if project not in get_supported_projects():
-        typer.echo(f"Unknown project: {project}")
-        raise typer.Exit(code=1)
+    validate_project(project)
 
     registry = ModelRegistry()
     status_payload = registry.get_status(project)
