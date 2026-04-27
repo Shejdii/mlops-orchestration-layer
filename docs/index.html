@@ -4,10 +4,11 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Magistrala MLOps Control Plane</title>
+
   <style>
     body {
       margin: 0;
-      font-family: Arial, sans-serif;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
       background: #0d1117;
       color: #e6edf3;
     }
@@ -37,6 +38,10 @@
       margin: 0 0 16px;
     }
 
+    h2 {
+      margin-top: 0;
+    }
+
     .subtitle {
       font-size: 20px;
       color: #8b949e;
@@ -55,6 +60,36 @@
       overflow-x: auto;
     }
 
+    /* 🔘 BUTTONS */
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 20px;
+    }
+
+    .button {
+      display: inline-block;
+      padding: 10px 16px;
+      border-radius: 10px;
+      border: 1px solid #30363d;
+      background: #161b22;
+      color: #e6edf3;
+      font-weight: 600;
+    }
+
+    .button.primary {
+      background: #238636;
+      border-color: #2ea043;
+      color: white;
+    }
+
+    .button:hover {
+      border-color: #58a6ff;
+      text-decoration: none;
+    }
+
+    /* GRID */
     .grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
@@ -69,7 +104,6 @@
     }
 
     .card h2 {
-      margin-top: 0;
       font-size: 22px;
     }
 
@@ -113,11 +147,16 @@
     }
   </style>
 </head>
+
 <body>
   <main class="container">
+
+    <!-- HERO -->
     <section class="hero">
       <div class="badge">Reusable MLOps Orchestration Layer</div>
+
       <h1>Magistrala MLOps Control Plane</h1>
+
       <p class="subtitle">
         A reusable orchestration layer that standardizes training, evaluation,
         packaging, smoke testing, policy decisions, registry updates, and model
@@ -127,9 +166,34 @@
       <div class="flow">
         train → evaluate → package → smoke → policy → registry → promote/reject
       </div>
+
+      <div class="actions">
+        <a class="button primary" href="https://github.com/Shejdii/mlops-orchestration-layer" target="_blank">
+          View Repository
+        </a>
+
+        <a class="button" href="#demo">
+          CLI Demo
+        </a>
+
+        <a class="button" href="#projects">
+          Projects
+        </a>
+      </div>
     </section>
 
-    <section class="grid">
+    <!-- WHY -->
+    <section class="section">
+      <h2>Why this exists</h2>
+      <p class="subtitle">
+        This project simulates a real-world ML platform where models are trained,
+        evaluated, validated through gates, and promoted or rejected based on measurable performance.
+      </p>
+    </section>
+
+    <!-- PROJECTS -->
+    <section id="projects" class="grid">
+
       <div class="card">
         <h2>Gold Risk Engine</h2>
         <p>Tabular ML project for gold market risk classification and 5-day volatility scoring.</p>
@@ -153,12 +217,31 @@
 
       <div class="card">
         <h2>Magistrala</h2>
-        <p>Control plane integrating all projects through adapters, registry, policy gates, and CLI automation.</p>
+        <p>
+          Platform layer that standardizes model lifecycle execution,
+          evaluation gates, registry state, promotion decisions,
+          and cross-project orchestration.
+        </p>
         <div class="status">CI: passing · Docker: passing · tests: 22</div>
         <p><a href="#">Repository</a></p>
       </div>
+
     </section>
 
+    <!-- DEMO -->
+    <section id="demo" class="section">
+      <h2>Quick CLI Demo</h2>
+      <pre>
+docker build -t magistrala .
+docker run --rm magistrala
+
+python -m mlops_orchestrator.cli status-all
+python -m mlops_orchestrator.cli explain gold
+python -m mlops_orchestrator.cli auto-run liar
+      </pre>
+    </section>
+
+    <!-- CLI VIEW -->
     <section class="section">
       <h2>CLI Dashboard</h2>
       <pre>
@@ -169,31 +252,40 @@ LIAR    | yes      | promoted        | macro_f1=0.3247 | 5/5   | NO_BASELINE_FIR
       </pre>
     </section>
 
+    <!-- FEATURES -->
     <section class="section">
       <h2>Key Features</h2>
+
       <div class="grid">
+
         <div class="card">
           <h2>Adapter Pattern</h2>
           <p>Each ML project plugs into the same lifecycle contract without changing the orchestrator core.</p>
         </div>
+
         <div class="card">
           <h2>Policy Engine</h2>
           <p>Promotion and rejection decisions are based on gates, metrics, smoke tests, and baseline comparison.</p>
         </div>
+
         <div class="card">
           <h2>Model Registry</h2>
-          <p>Candidates, promoted baselines, and latest decisions are tracked as structured JSON records.</p>
+          <p>Candidates, promoted baselines, and decisions are tracked as structured JSON records.</p>
         </div>
+
         <div class="card">
           <h2>Adaptive Runner</h2>
-          <p>A lightweight rule-based automation layer observes registry state and decides whether a run is needed.</p>
+          <p>Lightweight automation layer that observes system state and decides whether a new run is required.</p>
         </div>
+
       </div>
     </section>
 
     <footer>
-      Built as a portfolio MLOps system demonstrating lifecycle automation, reproducibility, CI, Docker, and platform thinking.
+      Built as a portfolio MLOps system demonstrating lifecycle automation,
+      reproducibility, CI, Docker, and platform thinking.
     </footer>
+
   </main>
 </body>
 </html>
