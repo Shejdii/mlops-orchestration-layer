@@ -1,14 +1,12 @@
 import json
 from dataclasses import asdict
 from pathlib import Path
-
 from typing import Any
-from rich.console import Console
-from rich.table import Table
-
 
 import typer
 import yaml
+from rich.console import Console
+from rich.table import Table
 
 from mlops_orchestrator.adapters.f1_adapter import F1Adapter
 from mlops_orchestrator.adapters.gold_adapter import GoldAdapter
@@ -18,7 +16,6 @@ from mlops_orchestrator.gates.policy_engine import PolicyEngine
 from mlops_orchestrator.registry.model_registry import ModelRegistry
 
 app = typer.Typer(help="Reusable MLOps orchestration layer for multi-project ML systems.")
-
 console = Console()
 
 ADAPTERS = {
@@ -41,14 +38,6 @@ def load_yaml_config(path: str) -> dict[str, Any]:
         return yaml.safe_load(file)
 
 
-@app.command("list")
-def list_projects() -> None:
-    typer.echo("Supported projects:")
-    for project in get_supported_projects():
-        typer.echo(f"- {project}")
-
-
-@app.command()
 def load_project_config(project: str) -> dict[str, Any]:
     return load_yaml_config(f"configs/{project}.yaml")
 
@@ -84,6 +73,80 @@ def _format_gates(latest_decision: dict[str, Any] | None) -> str:
     total = len(gate_results)
 
     return f"{passed}/{total}"
+
+
+def _format_gate_list(latest_decision: dict[str, Any] | None) -> list[str]:
+    if not latest_decision:
+        return []
+
+    gate_results = latest_decision.get("gate_results", [])
+    formatted_gates = []
+
+    for gate in gate_results:
+        name = (
+            gate.get("gate_name")
+            or gate.get("name")
+            or gate.get("gate")
+            or gate.get("reason_code")
+            or "unknown"
+        )
+        status = "PASS" if gate.get("passed") else "FAIL"
+        formatted_gates.append(f"{name}: {status}")
+
+    return formatted_gates
+
+
+def _interpret_decision(latest_decision: dict[str, Any] | None) -> str:
+    if not latest_decision:
+        return "No decision available."
+
+    reason = latest_decision.get("reason_code")
+
+    if reason == "NO_BASELINE_FIRST_PROMOTION":
+        return "First successful run promoted as the baseline."
+
+    if reason == "PROMOTE_ALL_GATES_PASS":
+        return "Candidate passed all gates and was promoted."
+
+    if reason == "PRIMARY_METRIC_REGRESSION":
+        return "Candidate underperformed against the current baseline and was rejected."
+
+    return "No specific interpretation available for this reason code."
+
+
+def _recommend_actions(latest_decision: dict[str, Any] | None) -> list[str]:
+    if not latest_decision:
+        return ["Run the project pipeline to generate a candidate decision."]
+
+    reason = latest_decision.get("reason_code")
+
+    if reason == "NO_BASELINE_FIRST_PROMOTION":
+        return [
+            "Run another candidate for comparison.",
+            "Check whether the primary metric is stable across repeated runs.",
+        ]
+
+    if reason == "PROMOTE_ALL_GATES_PASS":
+        return [
+            "Keep the promoted baseline as the current reference point.",
+            "Monitor future candidates for metric regressions.",
+        ]
+
+    if reason == "PRIMARY_METRIC_REGRESSION":
+        return [
+            "Compare candidate and baseline metrics.",
+            "Inspect recent data, feature, or training changes.",
+            "Run another candidate after fixing the regression source.",
+        ]
+
+    return ["Review the latest decision JSON for more details."]
+
+
+@app.command("list")
+def list_projects() -> None:
+    typer.echo("Supported projects:")
+    for project in get_supported_projects():
+        typer.echo(f"- {project}")
 
 
 @app.command()
@@ -171,7 +234,6 @@ def run(project: str) -> None:
     typer.echo(json.dumps(asdict(decision), indent=2))
 
 
-@app.command()
 @app.command("status-all")
 def status_all() -> None:
     registry = ModelRegistry()
@@ -206,6 +268,7 @@ def status_all() -> None:
     console.print(table)
 
 
+@app.command()
 def status(project: str) -> None:
     validate_project(project)
 
@@ -214,6 +277,37 @@ def status(project: str) -> None:
 
     typer.echo(f"\n[STATUS] Project: {project}")
     typer.echo(json.dumps(status_payload, indent=2))
+
+
+@app.command()
+def explain(project: str) -> None:
+    validate_project(project)
+
+    registry = ModelRegistry()
+    status_payload = registry.get_status(project)
+    latest_decision = status_payload.get("latest_decision")
+
+    if not latest_decision:
+        typer.echo(f"No decision found for project: {project}")
+        raise typer.Exit(code=1)
+
+    console.print(f"\n[bold]Project:[/bold] {project}")
+    console.print(f"[bold]Decision:[/bold] {latest_decision.get('decision')}")
+    console.print(f"[bold]Reason:[/bold] {latest_decision.get('reason_code')}")
+
+    console.print("\n[bold]Primary Metric:[/bold]")
+    console.print(_format_metric(latest_decision))
+
+    console.print("\n[bold]Gates:[/bold]")
+    for gate in _format_gate_list(latest_decision):
+        console.print(f"- {gate}")
+
+    console.print("\n[bold]Interpretation:[/bold]")
+    console.print(_interpret_decision(latest_decision))
+
+    console.print("\n[bold]Recommended actions:[/bold]")
+    for action in _recommend_actions(latest_decision):
+        console.print(f"- {action}")
 
 
 def main() -> None:
