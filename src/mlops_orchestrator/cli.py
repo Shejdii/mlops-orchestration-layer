@@ -310,6 +310,56 @@ def explain(project: str) -> None:
         console.print(f"- {action}")
 
 
+@app.command("auto-run")
+def auto_run(project: str) -> None:
+    validate_project(project)
+
+    registry = ModelRegistry()
+    status_payload = registry.get_status(project)
+
+    baseline = status_payload.get("baseline")
+    latest_decision = status_payload.get("latest_decision")
+
+    console.print("\n[bold]Adaptive Orchestration Runner[/bold]")
+    console.print(f"[bold]Project:[/bold] {project}")
+
+    if not baseline:
+        console.print("[bold]Observation:[/bold] No promoted baseline found.")
+        console.print("[bold]Decision:[/bold] Run pipeline to create first baseline.")
+        run(project)
+        return
+
+    if not latest_decision:
+        console.print("[bold]Observation:[/bold] No latest decision found.")
+        console.print("[bold]Decision:[/bold] Run pipeline to generate latest decision.")
+        run(project)
+        return
+
+    decision = latest_decision.get("decision")
+    reason = latest_decision.get("reason_code")
+
+    if reason == "NO_BASELINE_FIRST_PROMOTION":
+        console.print("[bold]Observation:[/bold] Candidate was promoted as the first baseline.")
+        console.print("[bold]Context:[/bold] No baseline existed before this run.")
+    else:
+        console.print(f"[bold]Observation:[/bold] Latest decision = {decision}")
+        console.print(f"[bold]Reason:[/bold] {reason}")
+
+    if decision == "rejected":
+        console.print("[bold]Decision:[/bold] Previous candidate was rejected.")
+        console.print("[bold]Action:[/bold] Running pipeline again.")
+        run(project)
+        return
+
+    if decision == "promoted":
+        console.print("[bold]Decision:[/bold] Current baseline is healthy.")
+        console.print("[bold]Action:[/bold] No run needed.")
+        return
+
+    console.print("[bold]Decision:[/bold] Unknown state.")
+    console.print("[bold]Action:[/bold] No automatic action taken.")
+
+
 def main() -> None:
     app()
 

@@ -1,3 +1,4 @@
+import os
 import json
 from dataclasses import asdict
 from datetime import datetime
@@ -8,8 +9,9 @@ from mlops_orchestrator.contracts.schemas import BaselineRecord, PolicyDecision
 
 
 class ModelRegistry:
-    def __init__(self, base_dir: str = "artifacts/registry") -> None:
-        self.base_dir = Path(base_dir)
+    def __init__(self, base_dir: str | None = None) -> None:
+        registry_dir = base_dir or os.getenv("ML_REGISTRY_DIR", "artifacts/registry")
+        self.base_dir = Path(registry_dir)
         self.base_dir.mkdir(parents=True, exist_ok=True)
 
     def register_candidate(self, project_name: str, payload: dict[str, Any]) -> Path:
