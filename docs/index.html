@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Magistrala MLOps Control Plane</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #0d1117;
+      color: #e6edf3;
+    }
+
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 48px 24px;
+    }
+
+    .hero {
+      margin-bottom: 48px;
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 6px 12px;
+      border: 1px solid #30363d;
+      border-radius: 999px;
+      color: #58a6ff;
+      margin-bottom: 16px;
+      font-size: 14px;
+    }
+
+    h1 {
+      font-size: 48px;
+      margin: 0 0 16px;
+    }
+
+    .subtitle {
+      font-size: 20px;
+      color: #8b949e;
+      max-width: 800px;
+      line-height: 1.6;
+    }
+
+    .flow {
+      background: #161b22;
+      border: 1px solid #30363d;
+      border-radius: 16px;
+      padding: 20px;
+      margin: 32px 0;
+      font-family: monospace;
+      color: #c9d1d9;
+      overflow-x: auto;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 20px;
+    }
+
+    .card {
+      background: #161b22;
+      border: 1px solid #30363d;
+      border-radius: 16px;
+      padding: 24px;
+    }
+
+    .card h2 {
+      margin-top: 0;
+      font-size: 22px;
+    }
+
+    .card p {
+      color: #8b949e;
+      line-height: 1.5;
+    }
+
+    .status {
+      margin-top: 12px;
+      font-family: monospace;
+      color: #3fb950;
+    }
+
+    a {
+      color: #58a6ff;
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    .section {
+      margin-top: 48px;
+    }
+
+    pre {
+      background: #010409;
+      border: 1px solid #30363d;
+      border-radius: 16px;
+      padding: 20px;
+      overflow-x: auto;
+      color: #c9d1d9;
+    }
+
+    footer {
+      margin-top: 64px;
+      color: #8b949e;
+      font-size: 14px;
+    }
+  </style>
+</head>
+<body>
+  <main class="container">
+    <section class="hero">
+      <div class="badge">Reusable MLOps Orchestration Layer</div>
+      <h1>Magistrala MLOps Control Plane</h1>
+      <p class="subtitle">
+        A reusable orchestration layer that standardizes training, evaluation,
+        packaging, smoke testing, policy decisions, registry updates, and model
+        promotion across multiple machine learning projects.
+      </p>
+
+      <div class="flow">
+        train → evaluate → package → smoke → policy → registry → promote/reject
+      </div>
+    </section>
+
+    <section class="grid">
+      <div class="card">
+        <h2>Gold Risk Engine</h2>
+        <p>Tabular ML project for gold market risk classification and 5-day volatility scoring.</p>
+        <div class="status">Latest: rejected · macro_f1=0.4056 · gates 4/5</div>
+        <p><a href="#">Live Render Demo</a> · <a href="#">Repository</a></p>
+      </div>
+
+      <div class="card">
+        <h2>F1 Driver Skill Modeling</h2>
+        <p>Regression and ranking pipeline focused on leakage-aware driver performance modeling.</p>
+        <div class="status">Latest: promoted · rmse=27.1430 · gates 6/6</div>
+        <p><a href="#">Repository</a></p>
+      </div>
+
+      <div class="card">
+        <h2>Fake News Reliability</h2>
+        <p>NLP project using Hugging Face, DistilBERT, MLflow, and confidence-aware classification.</p>
+        <div class="status">Latest: promoted · macro_f1=0.3247 · gates 5/5</div>
+        <p><a href="#">Repository</a></p>
+      </div>
+
+      <div class="card">
+        <h2>Magistrala</h2>
+        <p>Control plane integrating all projects through adapters, registry, policy gates, and CLI automation.</p>
+        <div class="status">CI: passing · Docker: passing · tests: 22</div>
+        <p><a href="#">Repository</a></p>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>CLI Dashboard</h2>
+      <pre>
+Project | Baseline | Latest Decision | Primary Metric  | Gates | Reason
+Gold    | yes      | rejected        | macro_f1=0.4056 | 4/5   | PRIMARY_METRIC_REGRESSION
+F1      | yes      | promoted        | rmse=27.1430    | 6/6   | PROMOTE_ALL_GATES_PASS
+LIAR    | yes      | promoted        | macro_f1=0.3247 | 5/5   | NO_BASELINE_FIRST_PROMOTION
+      </pre>
+    </section>
+
+    <section class="section">
+      <h2>Key Features</h2>
+      <div class="grid">
+        <div class="card">
+          <h2>Adapter Pattern</h2>
+          <p>Each ML project plugs into the same lifecycle contract without changing the orchestrator core.</p>
+        </div>
+        <div class="card">
+          <h2>Policy Engine</h2>
+          <p>Promotion and rejection decisions are based on gates, metrics, smoke tests, and baseline comparison.</p>
+        </div>
+        <div class="card">
+          <h2>Model Registry</h2>
+          <p>Candidates, promoted baselines, and latest decisions are tracked as structured JSON records.</p>
+        </div>
+        <div class="card">
+          <h2>Adaptive Runner</h2>
+          <p>A lightweight rule-based automation layer observes registry state and decides whether a run is needed.</p>
+        </div>
+      </div>
+    </section>
+
+    <footer>
+      Built as a portfolio MLOps system demonstrating lifecycle automation, reproducibility, CI, Docker, and platform thinking.
+    </footer>
+  </main>
+</body>
+</html>
