@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Magistrala MLOps Control Plane</title>
+  <title>Reusable MLOps Control Plane</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 
@@ -13,7 +13,7 @@
     <section class="hero">
       <div class="badge">Reusable MLOps Orchestration Layer</div>
 
-      <h1>Magistrala MLOps Control Plane</h1>
+      <h1>Reusable MLOps Control Plane</h1>
 
       <p class="subtitle">
         A reusable orchestration layer that standardizes training, evaluation,
@@ -22,14 +22,15 @@
       </p>
 
       <div class="flow">
-        train → evaluate → package → smoke → policy → registry → promote/reject
+        Standardized ML lifecycle:
+        train → evaluate → validate → package → promote or reject
       </div>
 
       <div class="actions">
         <a class="button primary" href="https://github.com/Shejdii/mlops-orchestration-layer" target="_blank">
           View Repository
         </a>
-        <a class="button" href="#demo">CLI Demo</a>
+        <a class="button" href="#demo">How to use</a>
         <a class="button" href="#projects">Projects</a>
         <a class="button" href="#testing">Reliability</a>
       </div>
@@ -46,113 +47,162 @@
     <section class="section">
       <h2>Architecture Overview</h2>
       <p class="subtitle">
-        Magistrala separates project-specific ML code from shared lifecycle orchestration.
-        Each project implements an adapter, while the control plane handles registry state,
+        The control plane separates project-specific ML code from shared lifecycle orchestration.
+        Each project implements an adapter, while the platform handles registry state,
         policy decisions, promotion logic, and CLI automation.
+      </p>
+
+      <p class="diagram-caption">
+        Control flow across adapters, policy, and registry
       </p>
 
       <div class="architecture">
         <pre>
-                ┌────────────────────────────┐
-                │      Magistrala CLI        │
-                │ run / status / explain     │
-                │ status-all / auto-run      │
-                └─────────────┬──────────────┘
-                              │
-              ┌───────────────┼────────────────┐
-              │               │                │
-        ┌─────▼─────┐   ┌─────▼─────┐    ┌─────▼─────┐
-        │ Gold      │   │ F1        │    │ LIAR      │
-        │ Adapter   │   │ Adapter   │    │ Adapter   │
-        └─────┬─────┘   └─────┬─────┘    └─────┬─────┘
-              │               │                │
-              └───────────────┼────────────────┘
-                              │
-        train → evaluate → package → smoke
-                              │
-                              ▼
-              ┌──────────────────────────┐
-              │      Policy Engine       │
-              │ gates + baseline compare │
-              └─────────────┬────────────┘
-                            │
-                            ▼
-              ┌──────────────────────────┐
-              │      Model Registry      │
-              │ candidates / baselines   │
-              │ latest decisions         │
-              └──────────────────────────┘
+┌────────────────────────────┐
+│    MLOps Control Plane     │
+│ run / status / explain     │
+│ status-all / auto-run      │
+└─────────────┬──────────────┘
+              │
+  ┌───────────┼───────────┐
+  │           │           │
+┌─▼─────┐  ┌──▼───┐   ┌───▼───┐
+│ Gold  │  │ F1   │   │ LIAR  │
+│Adapter│  │Adapter│  │Adapter│
+└─┬─────┘  └──┬───┘   └───┬───┘
+  │           │           │
+  └───────────┼───────────┘
+              │
+train → evaluate → package → smoke
+              │
+              ▼
+┌────────────────────────────┐
+│       Policy Engine        │
+│  gates + baseline compare  │
+└─────────────┬──────────────┘
+              │
+              ▼
+┌────────────────────────────┐
+│       Model Registry       │
+│ candidates / baselines     │
+│ latest decisions           │
+└────────────────────────────┘
         </pre>
       </div>
     </section>
 
     <section id="projects" class="section">
-  <h2>Integrated Projects</h2>
+      <h2>Integrated Projects</h2>
 
-  <div class="grid">
-    <div class="card">
-      <h2>Gold Risk Engine</h2>
-      <p>Tabular ML project for gold market risk classification and 5-day volatility scoring.</p>
-      <div class="status">Live API · Dockerized · latest gates 4/5</div>
-      <div class="link-row">
-        <a class="link-pill" href="https://gold-risk-ml-pipeline.onrender.com/" target="_blank">Live API</a>
-        <a class="link-pill" href="https://github.com/Shejdii/Gold-risk-ml-pipeline" target="_blank">Repository</a>
+      <div class="project-strip">
+        <span>Gold: Data → Features → Model → API</span>
+        <span>F1: Race data → Features → Regression → Ranking</span>
+        <span>LIAR: Text → Transformer → Classification</span>
       </div>
-    </div>
 
-    <div class="card">
-      <h2>F1 Driver Skill Modeling</h2>
-      <p>Regression and ranking pipeline focused on leakage-aware driver performance modeling.</p>
-      <div class="status">Latest: promoted · rmse=27.1430 · gates 6/6</div>
-      <div class="link-row">
-        <a class="link-pill" href="https://github.com/Shejdii/F1-mlops-race-performance" target="_blank">Repository</a>
-      </div>
-    </div>
+      <div class="grid">
+        <div class="card">
+          <h2>Gold Risk Engine</h2>
+          <p>Tabular ML project for gold market risk classification and 5-day volatility scoring.</p>
+          <div class="status status-inline">Live API · Dockerized · gates 4/5</div>
+          <div class="link-row">
+            <a class="link-pill" href="https://gold-risk-ml-pipeline.onrender.com/" target="_blank">Live API</a>
+            <a class="link-pill" href="https://github.com/Shejdii/Gold-risk-ml-pipeline" target="_blank">Repository</a>
+          </div>
+        </div>
 
-    <div class="card">
-      <h2>Fake News Reliability</h2>
-      <p>NLP project using Hugging Face, DistilBERT, MLflow, and confidence-aware classification.</p>
-      <div class="status">Latest: promoted · macro_f1=0.3247 · gates 5/5</div>
-      <div class="link-row">
-        <a class="link-pill" href="https://github.com/Shejdii/fake-news-reliability" target="_blank">Repository</a>
-      </div>
-    </div>
+        <div class="card">
+          <h2>F1 Driver Skill Modeling</h2>
+          <p>Regression and ranking pipeline focused on leakage-aware driver performance modeling.</p>
+          <div class="status status-inline">Promoted · rmse=27.1430 · gates 6/6</div>
+          <div class="link-row">
+            <a class="link-pill" href="https://github.com/Shejdii/F1-mlops-race-performance" target="_blank">Repository</a>
+          </div>
+        </div>
 
-    <div class="card">
-      <h2>Magistrala</h2>
-      <p>
-        Platform layer that standardizes model lifecycle execution,
-        evaluation gates, registry state, promotion decisions,
-        and cross-project orchestration.
-      </p>
-      <div class="status">CI: passing · Docker: passing · tests: 22</div>
-      <div class="link-row">
-        <a class="link-pill" href="https://github.com/Shejdii/mlops-orchestration-layer" target="_blank">Repository</a>
+        <div class="card">
+          <h2>Fake News Reliability</h2>
+          <p>NLP project using Hugging Face, DistilBERT, MLflow, and confidence-aware classification.</p>
+          <div class="status status-inline">Promoted · macro_f1=0.3247 · gates 5/5</div>
+          <div class="link-row">
+            <a class="link-pill" href="https://github.com/Shejdii/fake-news-reliability" target="_blank">Repository</a>
+          </div>
+        </div>
+
+        <div class="card">
+          <h2>Control Plane</h2>
+          <p>
+            Platform layer that standardizes model lifecycle execution,
+            evaluation gates, registry state, promotion decisions,
+            and cross-project orchestration.
+          </p>
+          <div class="status status-inline">CI passing · Docker passing · 22 tests</div>
+          <div class="link-row">
+            <a class="link-pill" href="https://github.com/Shejdii/mlops-orchestration-layer" target="_blank">Repository</a>
+          </div>
+        </div>
       </div>
-    </div>
-  </div>
-</section>
+    </section>
 
     <section id="demo" class="section">
-      <h2>Quick CLI Demo</h2>
-      <pre>
-docker build -t magistrala .
-docker run --rm magistrala
+      <h2>How to use the system</h2>
 
-python -m mlops_orchestrator.cli status-all
-python -m mlops_orchestrator.cli explain gold
-python -m mlops_orchestrator.cli auto-run liar
-      </pre>
+      <div class="grid">
+        <div class="card">
+          <h2>1. Build & run</h2>
+          <pre>docker build -t mlops-control-plane .
+docker run --rm mlops-control-plane</pre>
+        </div>
+
+        <div class="card">
+          <h2>2. Inspect system state</h2>
+          <pre>python -m mlops_orchestrator.cli status-all</pre>
+        </div>
+
+        <div class="card">
+          <h2>3. Explain decisions</h2>
+          <pre>python -m mlops_orchestrator.cli explain gold</pre>
+        </div>
+
+        <div class="card">
+          <h2>4. Trigger adaptive run</h2>
+          <pre>python -m mlops_orchestrator.cli auto-run liar</pre>
+        </div>
+      </div>
     </section>
 
     <section class="section">
       <h2>CLI Dashboard</h2>
-      <pre>
+      <p class="subtitle">
+        Each decision is based on policy gates. The reason code explains why a model
+        was promoted or rejected.
+      </p>
+
+      <div class="dashboard-table">
+        <pre>
 Project | Baseline | Latest Decision | Primary Metric  | Gates | Reason
 Gold    | yes      | rejected        | macro_f1=0.4056 | 4/5   | PRIMARY_METRIC_REGRESSION
 F1      | yes      | promoted        | rmse=27.1430    | 6/6   | PROMOTE_ALL_GATES_PASS
 LIAR    | yes      | promoted        | macro_f1=0.3247 | 5/5   | NO_BASELINE_FIRST_PROMOTION
-      </pre>
+        </pre>
+      </div>
+
+      <div class="grid reason-grid">
+        <div class="card">
+          <h2>PRIMARY_METRIC_REGRESSION</h2>
+          <p>The candidate model underperformed against the current baseline on the primary metric.</p>
+        </div>
+
+        <div class="card">
+          <h2>PROMOTE_ALL_GATES_PASS</h2>
+          <p>The candidate passed training, evaluation, packaging, smoke tests, and metric comparison gates.</p>
+        </div>
+
+        <div class="card">
+          <h2>NO_BASELINE_FIRST_PROMOTION</h2>
+          <p>No previous baseline existed, so the first successful candidate was promoted as the starting reference.</p>
+        </div>
+      </div>
     </section>
 
     <section id="testing" class="section">
@@ -167,25 +217,25 @@ LIAR    | yes      | promoted        | macro_f1=0.3247 | 5/5   | NO_BASELINE_FIR
         <div class="card">
           <h2>22 Fast Tests</h2>
           <p>Tests cover adapter contracts, config validation, policy decisions, registry behavior, CLI smoke checks, and helper logic.</p>
-          <div class="status">pytest: 22 passed</div>
+          <div class="status status-inline">22 fast tests · deterministic CI</div>
         </div>
 
         <div class="card">
           <h2>Adapter Contracts</h2>
           <p>Each project adapter must implement the same lifecycle methods, keeping Gold, F1, and LIAR compatible with the control plane.</p>
-          <div class="status">Gold · F1 · LIAR validated</div>
+          <div class="status status-inline">Gold · F1 · LIAR validated</div>
         </div>
 
         <div class="card">
           <h2>CI Quality Gates</h2>
           <p>GitHub Actions runs formatting, linting, tests, and Docker build validation before changes are accepted.</p>
-          <div class="status">black · ruff · pytest · Docker</div>
+          <div class="status status-inline">black · ruff · pytest · Docker</div>
         </div>
 
         <div class="card">
           <h2>Docker Reproducibility</h2>
           <p>The orchestrator can be built and tested inside a container, proving the environment is not tied to one local machine.</p>
-          <div class="status">docker build · docker test</div>
+          <div class="status status-inline">docker build · docker test</div>
         </div>
       </div>
     </section>
@@ -219,7 +269,7 @@ LIAR    | yes      | promoted        | macro_f1=0.3247 | 5/5   | NO_BASELINE_FIR
     <section class="section">
       <h2>Why I built this</h2>
       <p class="subtitle">
-        I built Magistrala to move beyond isolated ML projects and practice the engineering
+        I built this control plane to move beyond isolated ML projects and practice the engineering
         layer around machine learning: lifecycle automation, promotion decisions, reproducibility,
         testing, and cross-project standardization.
       </p>
