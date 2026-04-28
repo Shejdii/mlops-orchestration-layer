@@ -1,0 +1,24 @@
+<script>
+  async function loadDemo() {
+    const output = document.getElementById("demo-output");
+
+    try {
+      output.textContent = "Loading latest decision...";
+
+      const res = await fetch("./demo/latest_decision.json");
+
+      if (!res.ok) {
+        throw new Error(`HTTP ${res.status} - ${res.statusText}`);
+      }
+
+      const data = await res.json();
+
+      output.textContent = JSON.stringify(data, null, 2);
+    } catch (error) {
+      output.textContent =
+        "Failed to load latest decision artifact.\n\n" +
+        "Expected path: ./demo/latest_decision.json\n" +
+        "Error: " + error.message;
+    }
+  }
+</script>
