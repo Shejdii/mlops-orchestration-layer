@@ -377,3 +377,11 @@ footer {
   font-weight: 600;
   margin-bottom: 12px;
 }
+
+.decision-promoted {
+  color: #3fb950;
+}
+
+.decision-rejected {
+  color: #f85149;
+}

@@ -5,13 +5,13 @@ Decision: promoted
 Reason: PROMOTE_ALL_GATES_PASS
 Summary: All promotion gates passed.
 
-Pipeline gates:
-- PASS training_success
-- PASS evaluation_success
-- PASS artifact_packaged
-- PASS smoke_test
-- PASS primary_metric_check
-- PASS secondary_metric_check
+Gate results:
+[PASS] training_success
+[PASS] evaluation_success
+[PASS] artifact_packaged
+[PASS] smoke_test
+[PASS] primary_metric_check
+[PASS] secondary_metric_check
 
 Metrics:
 - Candidate rmse: 27.1430

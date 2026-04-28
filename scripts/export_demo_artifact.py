@@ -25,10 +25,6 @@ def find_latest_decision(project: str) -> Path:
     )
 
 
-def mark(passed: bool) -> str:
-    return "PASS" if passed else "FAIL"
-
-
 def build_clean_flow(project: str, data: dict) -> str:
     decision = data.get("decision", "unknown")
     reason = data.get("reason_code") or data.get("reason", "unknown")
@@ -50,19 +46,23 @@ def build_clean_flow(project: str, data: dict) -> str:
     if summary:
         lines.append(f"Summary: {summary}")
 
-    lines.extend(["", "Pipeline gates:"])
+    lines.extend(["", "Gate results:"])
 
     if gates:
         for gate in gates:
             name = gate.get("name", "unknown_gate")
             passed = gate.get("passed", False)
             reason_text = gate.get("reason", "")
-            line = f"- {mark(passed)} {name}"
+
+            symbol = "[PASS]" if passed else "[FAIL]"
+            line = f"{symbol} {name}"
+
             if reason_text:
                 line += f" ({reason_text})"
+
             lines.append(line)
     else:
-        lines.append("- No gate details available")
+        lines.append("No gate details available")
 
     lines.extend(["", "Metrics:"])
 

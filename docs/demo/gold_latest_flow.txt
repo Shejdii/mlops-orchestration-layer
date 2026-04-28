@@ -5,12 +5,12 @@ Decision: rejected
 Reason: PRIMARY_METRIC_REGRESSION
 Summary: Candidate did not beat or match baseline on primary metric.
 
-Pipeline gates:
-- PASS training_success
-- PASS evaluation_success
-- PASS artifact_packaged
-- PASS smoke_test
-- FAIL primary_metric_check (Candidate 0.404049 vs baseline 0.407192)
+Gate results:
+[PASS] training_success
+[PASS] evaluation_success
+[PASS] artifact_packaged
+[PASS] smoke_test
+[FAIL] primary_metric_check (Candidate 0.404049 vs baseline 0.407192)
 
 Metrics:
 - Candidate macro_f1: 0.4040

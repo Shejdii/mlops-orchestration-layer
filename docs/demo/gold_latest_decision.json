@@ -1,7 +1,7 @@
 {
   "project_name": "gold",
-  "timestamp": "2026-04-28T18:54:59Z",
-  "candidate_model": "gold_20260428_185457",
+  "timestamp": "2026-04-28T19:57:17Z",
+  "candidate_model": "gold_20260428_195716",
   "artifact_path": "D:\\Kurs\\MLOps\\VS\\Wlasne\\Gold-risk-ml-pipeline\\artifacts\\models\\regime_classifier.pkl",
   "primary_metric_name": "macro_f1",
   "candidate_primary_metric": 0.40404929257117533,

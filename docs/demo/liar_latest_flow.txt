@@ -5,12 +5,12 @@ Decision: promoted
 Reason: NO_BASELINE_FIRST_PROMOTION
 Summary: No baseline exists. Promoting first successful candidate.
 
-Pipeline gates:
-- PASS training_success
-- PASS evaluation_success
-- PASS artifact_packaged
-- PASS smoke_test
-- PASS baseline_check (No baseline found. First successful model can be promoted.)
+Gate results:
+[PASS] training_success
+[PASS] evaluation_success
+[PASS] artifact_packaged
+[PASS] smoke_test
+[PASS] baseline_check (No baseline found. First successful model can be promoted.)
 
 Metrics:
 - Candidate macro_f1: 0.3247
