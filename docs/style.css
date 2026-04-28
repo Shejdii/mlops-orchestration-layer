@@ -301,3 +301,76 @@ footer {
   margin: 0;
   max-width: 100%;
 }
+
+.demo-controls {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  justify-content: center;
+  margin: 1.5rem 0;
+  flex-wrap: wrap;
+}
+
+.demo-select {
+  background: #111820;
+  color: #e5e7eb;
+  border: 1px solid #303946;
+  border-radius: 12px;
+  padding: 0.8rem 1rem;
+  font-weight: 700;
+}
+
+.demo-summary {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(160px, 1fr));
+  gap: 1rem;
+  margin: 1.5rem 0;
+}
+
+.demo-metric-card {
+  background: #111820;
+  border: 1px solid #303946;
+  border-radius: 16px;
+  padding: 1rem;
+  text-align: center;
+}
+
+.demo-label {
+  color: #9ca3af;
+  font-size: 0.85rem;
+  margin-bottom: 0.4rem;
+}
+
+.demo-value {
+  color: #f3f4f6;
+  font-size: 1.1rem;
+  font-weight: 800;
+}
+
+.demo-pre {
+  text-align: left;
+  white-space: pre-wrap;
+  word-break: break-word;
+  letter-spacing: 0;
+  line-height: 1.5;
+  font-size: 0.9rem;
+  max-height: 420px;
+  overflow: auto;
+}
+
+.demo-raw {
+  margin-top: 1rem;
+}
+
+.demo-raw summary {
+  cursor: pointer;
+  color: #d1d5db;
+  font-weight: 700;
+  margin-bottom: 0.75rem;
+}
+
+@media (max-width: 900px) {
+  .demo-summary {
+    grid-template-columns: 1fr 1fr;
+  }
+}

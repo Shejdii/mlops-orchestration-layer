@@ -191,28 +191,52 @@
 
         <div class="step-card">
             <h2>Run Command</h2>
-            <pre>make demo PROJECT=liar</pre>
+            <pre>make demo PROJECT=&lt;gold|f1|liar&gt;</pre>
         </div>
 
-        <div class="step-card">
-            <h2>Latest Execution Flow</h2>
-            <pre id="demo-flow-output">Click the button to load latest execution flow...</pre>
-        </div>
-
-        <select id="project-select" class="button">
+        <div class="demo-controls">
+            <select id="project-select" class="demo-select">
             <option value="liar">LIAR</option>
             <option value="f1">F1</option>
             <option value="gold">Gold</option>
-        </select>
+            </select>
 
-        <div class="step-card">
-            <h2>Latest Decision Artifact</h2>
             <button id="load-demo-btn" class="button" type="button">
             Load Latest Run
             </button>
         </div>
 
-        <pre id="demo-output">Click the button to load latest decision...</pre>
+        <div class="demo-summary">
+            <div class="demo-metric-card">
+            <div class="demo-label">Project</div>
+            <div id="summary-project" class="demo-value">—</div>
+            </div>
+
+            <div class="demo-metric-card">
+            <div class="demo-label">Decision</div>
+            <div id="summary-decision" class="demo-value">—</div>
+            </div>
+
+            <div class="demo-metric-card">
+            <div class="demo-label">Reason</div>
+            <div id="summary-reason" class="demo-value">—</div>
+            </div>
+
+            <div class="demo-metric-card">
+            <div class="demo-label">Primary Metric</div>
+            <div id="summary-metric" class="demo-value">—</div>
+            </div>
+        </div>
+
+        <div class="step-card">
+            <h2>Latest Execution Flow</h2>
+            <pre id="demo-flow-output" class="demo-pre">Click the button to load latest execution flow...</pre>
+        </div>
+
+        <details class="demo-raw">
+            <summary>Show raw decision artifact</summary>
+            <pre id="demo-output" class="demo-pre">Click the button to load latest decision...</pre>
+        </details>
     </section>
 
     <section class="section">
@@ -379,46 +403,75 @@
 
   </main>
 
-        <script>
-        document.addEventListener("DOMContentLoaded", () => {
-            const button = document.getElementById("load-demo-btn");
-            const projectSelect = document.getElementById("project-select");
-            const flowOutput = document.getElementById("demo-flow-output");
-            const decisionOutput = document.getElementById("demo-output");
+    <script>
+    document.addEventListener("DOMContentLoaded", () => {
+        const button = document.getElementById("load-demo-btn");
+        const projectSelect = document.getElementById("project-select");
+        const flowOutput = document.getElementById("demo-flow-output");
+        const decisionOutput = document.getElementById("demo-output");
 
-            button.addEventListener("click", async () => {
-            const project = projectSelect.value;
+        const summaryProject = document.getElementById("summary-project");
+        const summaryDecision = document.getElementById("summary-decision");
+        const summaryReason = document.getElementById("summary-reason");
+        const summaryMetric = document.getElementById("summary-metric");
 
-            try {
-                flowOutput.textContent = `Loading latest execution flow for ${project}...`;
-                decisionOutput.textContent = `Loading latest decision artifact for ${project}...`;
+        function formatMetric(data) {
+        const name = data.primary_metric_name || "primary_metric";
+        const value =
+            data.candidate_primary_metric ??
+            data.primary_metric ??
+            data.metric_value ??
+            null;
 
-                const flowRes = await fetch(`./demo/${project}_latest_flow.txt`, {
-                cache: "no-store"
-                });
+        if (value === null || value === undefined) {
+            return "—";
+        }
 
-                if (!flowRes.ok) {
-                throw new Error(`Flow HTTP ${flowRes.status} - ${flowRes.statusText}`);
-                }
+        return `${name}=${Number(value).toFixed(4)}`;
+        }
 
-                flowOutput.textContent = await flowRes.text();
+        function renderSummary(project, data) {
+        summaryProject.textContent = project.toUpperCase();
+        summaryDecision.textContent = data.decision || "—";
+        summaryReason.textContent = data.reason_code || data.reason || "—";
+        summaryMetric.textContent = formatMetric(data);
+        }
 
-                const decisionRes = await fetch(`./demo/${project}_latest_decision.json`, {
-                cache: "no-store"
-                });
+        button.addEventListener("click", async () => {
+        const project = projectSelect.value;
 
-                if (!decisionRes.ok) {
-                throw new Error(`Decision HTTP ${decisionRes.status} - ${decisionRes.statusText}`);
-                }
+        try {
+            flowOutput.textContent = `Loading latest execution flow for ${project}...`;
+            decisionOutput.textContent = `Loading latest decision artifact for ${project}...`;
 
-                const decisionData = await decisionRes.json();
-                decisionOutput.textContent = JSON.stringify(decisionData, null, 2);
-            } catch (error) {
-                flowOutput.textContent = `Failed to load latest execution flow for ${project}.`;
-                decisionOutput.textContent = `Error: ${error.message}`;
-            }
+            const flowRes = await fetch(`./demo/${project}_latest_flow.txt`, {
+            cache: "no-store"
             });
+
+            if (!flowRes.ok) {
+            throw new Error(`Flow HTTP ${flowRes.status} - ${flowRes.statusText}`);
+            }
+
+            const flowText = await flowRes.text();
+            flowOutput.textContent = flowText;
+
+            const decisionRes = await fetch(`./demo/${project}_latest_decision.json`, {
+            cache: "no-store"
+            });
+
+            if (!decisionRes.ok) {
+            throw new Error(`Decision HTTP ${decisionRes.status} - ${decisionRes.statusText}`);
+            }
+
+            const decisionData = await decisionRes.json();
+            renderSummary(project, decisionData);
+            decisionOutput.textContent = JSON.stringify(decisionData, null, 2);
+        } catch (error) {
+            flowOutput.textContent = `Failed to load latest execution flow for ${project}.`;
+            decisionOutput.textContent = `Error: ${error.message}`;
+        }
         });
-        </script>
+    });
+    </script>
 </body>
 </html>
