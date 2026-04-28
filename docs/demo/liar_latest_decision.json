@@ -1,0 +1,40 @@
+{
+  "project_name": "liar",
+  "timestamp": "2026-04-25T18:25:47Z",
+  "candidate_model": "auto",
+  "artifact_path": "D:\\Kurs\\MLOps\\VS\\Wlasne\\fake-news-reliability\\artifacts\\models\\distilbert_model",
+  "primary_metric_name": "macro_f1",
+  "candidate_primary_metric": 0.32472492107763506,
+  "baseline_primary_metric": null,
+  "metric_diff": null,
+  "decision": "promoted",
+  "reason_code": "NO_BASELINE_FIRST_PROMOTION",
+  "summary": "No baseline exists. Promoting first successful candidate.",
+  "gate_results": [
+    {
+      "name": "training_success",
+      "passed": true,
+      "reason": ""
+    },
+    {
+      "name": "evaluation_success",
+      "passed": true,
+      "reason": ""
+    },
+    {
+      "name": "artifact_packaged",
+      "passed": true,
+      "reason": ""
+    },
+    {
+      "name": "smoke_test",
+      "passed": true,
+      "reason": ""
+    },
+    {
+      "name": "baseline_check",
+      "passed": true,
+      "reason": "No baseline found. First successful model can be promoted."
+    }
+  ]
+}

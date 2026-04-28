@@ -1,0 +1,40 @@
+{
+  "project_name": "gold",
+  "timestamp": "2026-04-28T18:39:22Z",
+  "candidate_model": "gold_20260428_183921",
+  "artifact_path": "D:\\Kurs\\MLOps\\VS\\Wlasne\\Gold-risk-ml-pipeline\\artifacts\\models\\regime_classifier.pkl",
+  "primary_metric_name": "macro_f1",
+  "candidate_primary_metric": 0.40404929257117533,
+  "baseline_primary_metric": 0.40719195272442166,
+  "metric_diff": -0.003142660153246324,
+  "decision": "rejected",
+  "reason_code": "PRIMARY_METRIC_REGRESSION",
+  "summary": "Candidate did not beat or match baseline on primary metric.",
+  "gate_results": [
+    {
+      "name": "training_success",
+      "passed": true,
+      "reason": ""
+    },
+    {
+      "name": "evaluation_success",
+      "passed": true,
+      "reason": ""
+    },
+    {
+      "name": "artifact_packaged",
+      "passed": true,
+      "reason": ""
+    },
+    {
+      "name": "smoke_test",
+      "passed": true,
+      "reason": ""
+    },
+    {
+      "name": "primary_metric_check",
+      "passed": false,
+      "reason": "Candidate 0.404049 vs baseline 0.407192"
+    }
+  ]
+}

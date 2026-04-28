@@ -1,0 +1,45 @@
+{
+  "project_name": "f1",
+  "timestamp": "2026-04-24T18:40:49Z",
+  "candidate_model": "f1_20260424_184047",
+  "artifact_path": "D:\\Kurs\\MLOps\\VS\\Wlasne\\F1\\F1ml\\artifacts\\models\\ridge.joblib",
+  "primary_metric_name": "rmse",
+  "candidate_primary_metric": 27.142997431571786,
+  "baseline_primary_metric": 27.142997431571786,
+  "metric_diff": 0.0,
+  "decision": "promoted",
+  "reason_code": "PROMOTE_ALL_GATES_PASS",
+  "summary": "All promotion gates passed.",
+  "gate_results": [
+    {
+      "name": "training_success",
+      "passed": true,
+      "reason": ""
+    },
+    {
+      "name": "evaluation_success",
+      "passed": true,
+      "reason": ""
+    },
+    {
+      "name": "artifact_packaged",
+      "passed": true,
+      "reason": ""
+    },
+    {
+      "name": "smoke_test",
+      "passed": true,
+      "reason": ""
+    },
+    {
+      "name": "primary_metric_check",
+      "passed": true,
+      "reason": ""
+    },
+    {
+      "name": "secondary_metric_check",
+      "passed": true,
+      "reason": ""
+    }
+  ]
+}

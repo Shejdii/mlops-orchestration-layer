@@ -38,5 +38,5 @@ docker-cli:
 	docker run --rm magistrala mlops list
 
 demo:
-	mlops auto-run liar
-	python scripts/export_demo_artifact.py
+	powershell -Command "New-Item -ItemType Directory -Force docs/demo | Out-Null; python -m mlops_orchestrator.cli auto-run $(PROJECT) | Tee-Object -FilePath docs/demo/$(PROJECT)_latest_flow.txt"
+	python scripts/export_demo_artifact.py --project $(PROJECT)
