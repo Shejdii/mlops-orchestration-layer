@@ -239,3 +239,65 @@ footer {
   color: #8b949e;
   font-size: 14px;
 }
+
+.dashboard-table {
+  overflow-x: auto;
+  margin: 24px auto 0;
+  max-width: 1000px;
+}
+
+.dashboard-table table {
+  width: 100%;
+  border-collapse: collapse;
+  background: #010409;
+  border: 1px solid #30363d;
+  border-radius: 16px;
+  overflow: hidden;
+  font-family: monospace;
+}
+
+.dashboard-table th,
+.dashboard-table td {
+  padding: 14px 16px;
+  border-bottom: 1px solid #30363d;
+  text-align: left;
+  white-space: nowrap;
+}
+
+.dashboard-table th {
+  color: #e6edf3;
+  background: #161b22;
+}
+
+.dashboard-table td {
+  color: #c9d1d9;
+}
+
+.dashboard-table tr:last-child td {
+  border-bottom: none;
+}
+
+.steps {
+  display: grid;
+  gap: 16px;
+  max-width: 900px;
+  margin: 24px auto 0;
+}
+
+.step-card {
+  background: #161b22;
+  border: 1px solid #30363d;
+  border-radius: 16px;
+  padding: 20px;
+  text-align: left;
+}
+
+.step-card h2 {
+  font-size: 18px;
+  margin-bottom: 12px;
+}
+
+.step-card pre {
+  margin: 0;
+  max-width: 100%;
+}
