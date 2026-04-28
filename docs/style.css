@@ -311,13 +311,15 @@ footer {
 .demo-controls {
   display: flex;
   justify-content: center;
+  align-items: center;
   gap: 12px;
-  margin: 24px 0;
+  margin: 24px auto;
   flex-wrap: wrap;
 }
 
 .demo-select {
-  padding: 10px 16px;
+  min-width: 120px;
+  padding: 10px 14px;
   border-radius: 10px;
   border: 1px solid #30363d;
   background: #161b22;
@@ -327,7 +329,7 @@ footer {
 
 .demo-summary {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  grid-template-columns: repeat(4, 1fr);
   gap: 16px;
   max-width: 900px;
   margin: 24px auto;
@@ -338,7 +340,6 @@ footer {
   border: 1px solid #30363d;
   border-radius: 16px;
   padding: 18px;
-  text-align: center;
 }
 
 .demo-label {
@@ -354,28 +355,13 @@ footer {
 }
 
 .demo-pre {
-  margin: 0;
   text-align: left;
   font-family: Consolas, "Courier New", monospace;
-  letter-spacing: normal;
-  word-spacing: normal;
   white-space: pre-wrap;
   line-height: 1.45;
   font-size: 14px;
   max-height: 360px;
   overflow: auto;
-}
-
-.demo-raw {
-  max-width: 900px;
-  margin: 20px auto 0;
-}
-
-.demo-raw summary {
-  cursor: pointer;
-  color: #8b949e;
-  font-weight: 600;
-  margin-bottom: 12px;
 }
 
 .decision-promoted {
@@ -384,4 +370,10 @@ footer {
 
 .decision-rejected {
   color: #f85149;
+}
+
+@media (max-width: 800px) {
+  .demo-summary {
+    grid-template-columns: 1fr 1fr;
+  }
 }
