@@ -36,3 +36,7 @@ docker-test:
 
 docker-cli:
 	docker run --rm magistrala mlops list
+
+demo:
+	mlops auto-run liar
+	python scripts/export_demo_artifact.py
