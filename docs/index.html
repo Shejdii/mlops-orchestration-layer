@@ -58,35 +58,37 @@
 
     <div class="architecture">
         <pre>
-    ┌────────────────────────────┐
-    │    MLOps Control Plane     │
-    │ run / status / explain     │
-    │ status-all / auto-run      │
-    └─────────────┬──────────────┘
-                │
-    ┌───────────┼───────────┐
-    │           │           │
-    ┌─▼─────┐  ┌──▼───┐   ┌───▼───┐
-    │ Gold  │  │ F1   │   │ LIAR  │
-    │Adapter│  │Adapter│  │Adapter│
-    └─┬─────┘  └──┬───┘   └───┬───┘
-    │           │           │
-    └───────────┼───────────┘
-                │
-    train → evaluate → package → smoke
-                │
-                ▼
-    ┌────────────────────────────┐
-    │       Policy Engine        │
-    │  gates + baseline compare  │
-    └─────────────┬──────────────┘
-                │
-                ▼
-    ┌────────────────────────────┐
-    │       Model Registry       │
-    │ candidates / baselines     │
-    │ latest decisions           │
-    └────────────────────────────┘
+<pre>
+┌──────────────────────────────┐
+│     MLOps Control Plane      │
+│   run / status / explain     │
+│   status-all / auto-run      │
+└──────────────┬───────────────┘
+               │
+       ┌───────┴───────┐
+       │               │
+┌──────▼──────┐ ┌──────▼──────┐ ┌──────▼──────┐
+│    Gold     │ │     F1      │ │    LIAR     │
+│   Adapter   │ │   Adapter   │ │   Adapter   │
+└──────┬──────┘ └──────┬──────┘ └──────┬──────┘
+       │               │               │
+       └───────┬───────┴───────┬───────┘
+               │
+ train → evaluate → package → smoke
+               │
+               ▼
+┌──────────────────────────────┐
+│        Policy Engine         │
+│   gates + baseline compare   │
+└──────────────┬───────────────┘
+               │
+               ▼
+┌──────────────────────────────┐
+│        Model Registry        │
+│   candidates / baselines     │
+│   latest decisions           │
+└──────────────────────────────┘
+</pre>
         </pre>
     </div>
     </section>
@@ -145,30 +147,35 @@
     </section>
 
     <section id="demo" class="section">
-      <h2>How to use the system</h2>
+    <h2>How to use the system</h2>
 
-      <div class="grid">
+    <div class="grid">
         <div class="card">
-          <h2>1. Build & run</h2>
-          <pre>docker build -t mlops-control-plane .
-docker run --rm mlops-control-plane</pre>
+        <h2>1. Build & run</h2>
+        <pre>docker build -t mlops-control-plane .
+    docker run --rm mlops-control-plane</pre>
         </div>
 
         <div class="card">
-          <h2>2. Inspect system state</h2>
-          <pre>python -m mlops_orchestrator.cli status-all</pre>
+        <h2>2. Run tests</h2>
+        <pre>python -m pytest -q</pre>
         </div>
 
         <div class="card">
-          <h2>3. Explain decisions</h2>
-          <pre>python -m mlops_orchestrator.cli explain gold</pre>
+        <h2>3. Inspect system state</h2>
+        <pre>python -m mlops_orchestrator.cli status-all</pre>
         </div>
 
         <div class="card">
-          <h2>4. Trigger adaptive run</h2>
-          <pre>python -m mlops_orchestrator.cli auto-run liar</pre>
+        <h2>4. Explain decisions</h2>
+        <pre>python -m mlops_orchestrator.cli explain gold</pre>
         </div>
-      </div>
+
+        <div class="card">
+        <h2>5. Trigger adaptive run</h2>
+        <pre>python -m mlops_orchestrator.cli auto-run liar</pre>
+        </div>
+    </div>
     </section>
 
     <section class="section">
