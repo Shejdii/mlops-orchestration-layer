@@ -10,85 +10,85 @@
 <body>
   <main class="container">
 
-    <section class="hero">
-      <div class="badge">Reusable MLOps Orchestration Layer</div>
+    <section class="hero centered-section">
+    <div class="badge">Reusable MLOps Orchestration Layer</div>
 
-      <h1>Reusable MLOps Control Plane</h1>
+    <h1>Reusable MLOps Control Plane</h1>
 
-      <p class="subtitle">
+    <p class="subtitle">
         A reusable orchestration layer that standardizes training, evaluation,
         packaging, smoke testing, policy decisions, registry updates, and model
         promotion across multiple machine learning projects.
-      </p>
+    </p>
 
-      <div class="flow">
+    <div class="flow">
         Standardized ML lifecycle:
         train → evaluate → validate → package → promote or reject
-      </div>
+    </div>
 
-      <div class="actions">
+    <div class="actions">
         <a class="button primary" href="https://github.com/Shejdii/mlops-orchestration-layer" target="_blank">
-          View Repository
+        View Repository
         </a>
         <a class="button" href="#demo">How to use</a>
         <a class="button" href="#projects">Projects</a>
         <a class="button" href="#testing">Reliability</a>
-      </div>
+    </div>
     </section>
 
-    <section class="section">
-      <h2>Why this exists</h2>
-      <p class="subtitle">
+    <section class="section centered-section">
+    <h2>Why this exists</h2>
+    <p class="subtitle">
         This project simulates a real-world ML platform where models are trained,
         evaluated, validated through gates, and promoted or rejected based on measurable performance.
-      </p>
+    </p>
     </section>
 
-    <section class="section">
-      <h2>Architecture Overview</h2>
-      <p class="subtitle">
+    <section class="section centered-section">
+    <h2>Architecture Overview</h2>
+    <p class="subtitle">
         The control plane separates project-specific ML code from shared lifecycle orchestration.
         Each project implements an adapter, while the platform handles registry state,
         policy decisions, promotion logic, and CLI automation.
-      </p>
+    </p>
 
-      <p class="diagram-caption">
+    <p class="diagram-caption">
         Control flow across adapters, policy, and registry
-      </p>
+    </p>
 
-      <div class="architecture">
+    <div class="architecture">
         <pre>
-┌────────────────────────────┐
-│    MLOps Control Plane     │
-│ run / status / explain     │
-│ status-all / auto-run      │
-└─────────────┬──────────────┘
-              │
-  ┌───────────┼───────────┐
-  │           │           │
-┌─▼─────┐  ┌──▼───┐   ┌───▼───┐
-│ Gold  │  │ F1   │   │ LIAR  │
-│Adapter│  │Adapter│  │Adapter│
-└─┬─────┘  └──┬───┘   └───┬───┘
-  │           │           │
-  └───────────┼───────────┘
-              │
-train → evaluate → package → smoke
-              │
-              ▼
-┌────────────────────────────┐
-│       Policy Engine        │
-│  gates + baseline compare  │
-└─────────────┬──────────────┘
-              │
-              ▼
-┌────────────────────────────┐
-│       Model Registry       │
-│ candidates / baselines     │
-│ latest decisions           │
-└────────────────────────────┘
+    ┌────────────────────────────┐
+    │    MLOps Control Plane     │
+    │ run / status / explain     │
+    │ status-all / auto-run      │
+    └─────────────┬──────────────┘
+                │
+    ┌───────────┼───────────┐
+    │           │           │
+    ┌─▼─────┐  ┌──▼───┐   ┌───▼───┐
+    │ Gold  │  │ F1   │   │ LIAR  │
+    │Adapter│  │Adapter│  │Adapter│
+    └─┬─────┘  └──┬───┘   └───┬───┘
+    │           │           │
+    └───────────┼───────────┘
+                │
+    train → evaluate → package → smoke
+                │
+                ▼
+    ┌────────────────────────────┐
+    │       Policy Engine        │
+    │  gates + baseline compare  │
+    └─────────────┬──────────────┘
+                │
+                ▼
+    ┌────────────────────────────┐
+    │       Model Registry       │
+    │ candidates / baselines     │
+    │ latest decisions           │
+    └────────────────────────────┘
         </pre>
-      </div>
+    </div>
     </section>
 
     <section id="projects" class="section">
