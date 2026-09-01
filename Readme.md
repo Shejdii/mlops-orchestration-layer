@@ -38,7 +38,7 @@ It implements:
 
 ## 🧪 Live Demo (Real System Output)
 
-👉 https://shejdii.github.io/mlops-orchestration-layer/
+👉 https://krzysztof-sedkowski.github.io/mlops-orchestration-layer/
 
 The demo shows:
 
